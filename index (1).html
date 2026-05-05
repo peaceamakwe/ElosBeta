@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Apply — Emotional Leverage Operating System™</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --accent: #B85C38;
+      --accent-light: #f5ebe6;
+      --text-primary: #1a1a18;
+      --text-secondary: #5a5a56;
+      --text-muted: #9a9a94;
+      --border: #e4e2da;
+      --bg: #faf9f6;
+      --bg-card: #ffffff;
+      --font-display: 'Cormorant Garamond', Georgia, serif;
+      --font-body: 'DM Sans', sans-serif;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--font-body);
+      background-color: var(--bg);
+      color: var(--text-primary);
+      min-height: 100vh;
+      margin: 0;
+      padding: 0;
+    }
+
+    /* TOP BAR */
+    .top-bar {
+      border-bottom: 1px solid var(--border);
+      padding: 1.1rem 0;
+      background: var(--bg);
+    }
+
+    .brand-lockup {
+      font-family: var(--font-display);
+      font-size: 1.05rem;
+      font-weight: 500;
+      letter-spacing: 0.02em;
+      color: var(--text-primary);
+      text-decoration: none;
+    }
+
+    .brand-lockup sup {
+      font-size: 0.6rem;
+      font-family: var(--font-body);
+      font-weight: 400;
+      color: var(--text-muted);
+    }
+
+    .slots-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      font-size: 0.75rem;
+      color: var(--text-secondary);
+      background: var(--accent-light);
+      border: 1px solid rgba(184,92,56,0.15);
+      border-radius: 20px;
+      padding: 5px 14px;
+    }
+
+    .slots-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--accent);
+      animation: pulse 2s infinite;
+      flex-shrink: 0;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.35; }
+    }
+
+    /* HERO */
+    .hero-section {
+      padding: 4rem 0 3rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .eyebrow {
+      font-size: 0.68rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 1rem;
+    }
+
+    .hero-title {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 5vw, 3.2rem);
+      font-weight: 500;
+      line-height: 1.12;
+      color: var(--text-primary);
+      margin-bottom: 1.1rem;
+    }
+
+    .hero-title em {
+      font-style: italic;
+      color: var(--accent);
+    }
+
+    .hero-body {
+      font-size: 0.92rem;
+      color: var(--text-secondary);
+      line-height: 1.78;
+      max-width: 480px;
+      margin-bottom: 0;
+    }
+
+    /* PROGRESS */
+    .progress-wrap { padding: 2rem 0 0; }
+
+    .step-indicators {
+      display: flex;
+      align-items: center;
+    }
+
+    .step-dot {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      border: 1px solid var(--border);
+      background: var(--bg-card);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.72rem;
+      font-weight: 500;
+      color: var(--text-muted);
+      transition: all 0.3s ease;
+      flex-shrink: 0;
+    }
+
+    .step-dot.active {
+      border-color: var(--accent);
+      color: var(--accent);
+      background: var(--accent-light);
+    }
+
+    .step-dot.done {
+      border-color: var(--accent);
+      background: var(--accent);
+      color: #fff;
+    }
+
+    .step-line {
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+      transition: background 0.4s ease;
+    }
+
+    .step-line.done { background: var(--accent); }
+
+    /* FORM CARD */
+    .form-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 2.5rem;
+      margin-top: 1.75rem;
+      margin-bottom: 2rem;
+    }
+
+    /* QUESTION BLOCKS */
+    .q-block { display: none; }
+
+    .q-block.active {
+      display: block;
+      animation: fadeUp 0.35s ease forwards;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(12px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .q-counter {
+      font-size: 0.67rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 0.45rem;
+    }
+
+    .q-title {
+      font-family: var(--font-display);
+      font-size: 1.55rem;
+      font-weight: 500;
+      line-height: 1.3;
+      color: var(--text-primary);
+      margin-bottom: 0.4rem;
+    }
+
+    .q-hint {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      line-height: 1.65;
+      margin-bottom: 1.3rem;
+    }
+
+    /* INPUTS */
+    .elos-input,
+    .elos-textarea {
+      width: 100%;
+      padding: 13px 16px;
+      font-family: var(--font-body);
+      font-size: 0.9rem;
+      color: var(--text-primary);
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      -webkit-appearance: none;
+      appearance: none;
+    }
+
+    .elos-textarea {
+      min-height: 130px;
+      resize: vertical;
+      line-height: 1.7;
+    }
+
+    .elos-input:focus,
+    .elos-textarea:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(184,92,56,0.1);
+      background: #fff;
+    }
+
+    /* MINI FIELD GROUP (page 7) */
+    .mini-field {
+      margin-bottom: 1.1rem;
+    }
+
+    .mini-label {
+      font-size: 0.75rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 0.4rem;
+      display: block;
+    }
+
+    /* CHOICE GRID */
+    .choice-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    @media (max-width: 500px) {
+      .choice-grid { grid-template-columns: 1fr; }
+      .form-card { padding: 1.5rem; }
+      .hero-section { padding: 2.5rem 0 2rem; }
+    }
+
+    .choice-btn {
+      padding: 13px 15px;
+      text-align: left;
+      font-family: var(--font-body);
+      font-size: 0.83rem;
+      color: var(--text-secondary);
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.2s;
+      line-height: 1.45;
+    }
+
+    .choice-btn:hover {
+      border-color: #c8c6be;
+      color: var(--text-primary);
+    }
+
+    .choice-btn.selected {
+      border-color: var(--accent);
+      color: var(--accent);
+      background: var(--accent-light);
+    }
+
+    /* PRIVACY NOTE */
+    .privacy-note {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      margin-top: 1rem;
+      line-height: 1.6;
+    }
+
+    .privacy-note span {
+      color: var(--accent);
+    }
+
+    /* ERROR */
+    .field-error {
+      font-size: 0.78rem;
+      color: var(--accent);
+      margin-top: 5px;
+      display: none;
+    }
+
+    /* NAV BUTTONS */
+    .nav-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 1.75rem;
+    }
+
+    .btn-back {
+      font-family: var(--font-body);
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 0;
+      transition: color 0.2s;
+    }
+
+    .btn-back:hover { color: var(--text-secondary); }
+
+    .btn-next {
+      font-family: var(--font-body);
+      font-size: 0.88rem;
+      font-weight: 500;
+      color: #fff;
+      background: var(--accent);
+      border: none;
+      border-radius: 8px;
+      padding: 12px 32px;
+      cursor: pointer;
+      transition: opacity 0.2s, transform 0.15s;
+    }
+
+    .btn-next:hover { opacity: 0.88; }
+    .btn-next:active { transform: scale(0.97); }
+
+    /* SUBMITTED */
+    .submitted-wrap {
+      display: none;
+      text-align: center;
+      padding: 4rem 1rem;
+    }
+
+    .submitted-wrap.active {
+      display: block;
+      animation: fadeUp 0.4s ease forwards;
+    }
+
+    .check-ring {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      border: 1px solid var(--accent);
+      color: var(--accent);
+      font-size: 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 1.5rem;
+    }
+
+    .submitted-title {
+      font-family: var(--font-display);
+      font-size: 2rem;
+      font-weight: 500;
+      color: var(--text-primary);
+      margin-bottom: 0.75rem;
+    }
+
+    .submitted-body {
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      line-height: 1.78;
+      max-width: 400px;
+      margin: 0 auto 2rem;
+    }
+
+    /* FOOTER */
+    .page-footer {
+      border-top: 1px solid var(--border);
+      padding: 1.5rem 0;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- TOP BAR -->
+  <div class="top-bar">
+    <div class="container">
+      <div class="d-flex align-items-center justify-content-between flex-wrap gap-2">
+        <a href="#" class="brand-lockup">Emotional Leverage Operating System<sup>™</sup></a>
+        <div class="slots-badge">
+          <span class="slots-dot"></span>
+          Limited slots remaining
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+
+    <!-- HERO -->
+    <div class="hero-section">
+      <div class="row">
+        <div class="col-lg-8">
+          <p class="eyebrow">Private Beta Cohort — By Application Only</p>
+          <h1 class="hero-title">Apply for the <em>Private</em><br>Beta Cohort</h1>
+          <p class="hero-body">
+            We are currently refining ELOS™ with a select group of executives before the full launch.
+            Limited slots. This price will not be offered again.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- PROGRESS -->
+    <div class="progress-wrap" id="progress-section">
+      <div class="step-indicators">
+        <div class="step-dot active" id="sd1">1</div>
+        <div class="step-line" id="sl1"></div>
+        <div class="step-dot" id="sd2">2</div>
+        <div class="step-line" id="sl2"></div>
+        <div class="step-dot" id="sd3">3</div>
+        <div class="step-line" id="sl3"></div>
+        <div class="step-dot" id="sd4">4</div>
+        <div class="step-line" id="sl4"></div>
+        <div class="step-dot" id="sd5">5</div>
+        <div class="step-line" id="sl5"></div>
+        <div class="step-dot" id="sd6">6</div>
+        <div class="step-line" id="sl6"></div>
+        <div class="step-dot" id="sd7">7</div>
+      </div>
+    </div>
+
+    <!-- FORM CARD -->
+    <div class="form-card" id="form-card">
+
+      <!-- Q1 -->
+      <div class="q-block active" id="q1">
+        <p class="q-counter">Question 1 of 7</p>
+        <h2 class="q-title">What is your current role and industry?</h2>
+        <p class="q-hint">Be specific — this helps us confirm that the cohort is the right fit for you.</p>
+        <input class="elos-input" type="text" id="a1" placeholder="e.g. Managing Director, Financial Services" autocomplete="off" />
+        <p class="field-error" id="e1">Please answer before continuing.</p>
+        <div class="nav-row">
+          <span></span>
+          <button class="btn-next" onclick="nextStep(1)">Continue &rarr;</button>
+        </div>
+      </div>
+
+      <!-- Q2 -->
+      <div class="q-block" id="q2">
+        <p class="q-counter">Question 2 of 7</p>
+        <h2 class="q-title">What was the most expensive reaction or decision you regretted in the last 12 months?</h2>
+        <p class="q-hint">This can be a deal, a conversation, a team moment — anything where your response cost you more than it should have.</p>
+        <textarea class="elos-textarea" id="a2" placeholder="Describe the moment..."></textarea>
+        <p class="field-error" id="e2">Please answer before continuing.</p>
+        <div class="nav-row">
+          <button class="btn-back" onclick="prevStep(2)">&larr; Back</button>
+          <button class="btn-next" onclick="nextStep(2)">Continue &rarr;</button>
+        </div>
+      </div>
+
+      <!-- Q3 -->
+      <div class="q-block" id="q3">
+        <p class="q-counter">Question 3 of 7</p>
+        <h2 class="q-title">What does a single uncontrolled moment currently cost you?</h2>
+        <p class="q-hint">Think in real terms — deals, authority, relationships. What is actually on the line when pressure rises?</p>
+        <textarea class="elos-textarea" id="a3" placeholder="Be honest. This stays private."></textarea>
+        <p class="field-error" id="e3">Please answer before continuing.</p>
+        <div class="nav-row">
+          <button class="btn-back" onclick="prevStep(3)">&larr; Back</button>
+          <button class="btn-next" onclick="nextStep(3)">Continue &rarr;</button>
+        </div>
+      </div>
+
+      <!-- Q4 -->
+      <div class="q-block" id="q4">
+        <p class="q-counter">Question 4 of 7</p>
+        <h2 class="q-title">Are you currently investing in any coaching or performance system?</h2>
+        <p class="q-hint">Select the option that best describes your current situation.</p>
+        <div class="choice-grid">
+          <button class="choice-btn" onclick="selectChoice(this,'a4')">Yes — active coaching or program</button>
+          <button class="choice-btn" onclick="selectChoice(this,'a4')">Previously, not currently</button>
+          <button class="choice-btn" onclick="selectChoice(this,'a4')">No — I rely on my own systems</button>
+          <button class="choice-btn" onclick="selectChoice(this,'a4')">Exploring options right now</button>
+        </div>
+        <input type="hidden" id="a4" />
+        <p class="field-error" id="e4">Please select an option.</p>
+        <div class="nav-row">
+          <button class="btn-back" onclick="prevStep(4)">&larr; Back</button>
+          <button class="btn-next" onclick="nextStep(4)">Continue &rarr;</button>
+        </div>
+      </div>
+
+      <!-- Q5 -->
+      <div class="q-block" id="q5">
+        <p class="q-counter">Question 5 of 7</p>
+        <h2 class="q-title">What would change in your leadership in the next 90 days if this system was running?</h2>
+        <p class="q-hint">Think about specific decisions, relationships, or situations you are currently navigating.</p>
+        <textarea class="elos-textarea" id="a5" placeholder="Describe what you would do differently..."></textarea>
+        <p class="field-error" id="e5">Please answer before continuing.</p>
+        <div class="nav-row">
+          <button class="btn-back" onclick="prevStep(5)">&larr; Back</button>
+          <button class="btn-next" onclick="nextStep(5)">Continue &rarr;</button>
+        </div>
+      </div>
+
+      <!-- Q6 -->
+      <div class="q-block" id="q6">
+        <p class="q-counter">Question 6 of 7</p>
+        <h2 class="q-title">What is your available investment range for a system that directly protects your performance?</h2>
+        <p class="q-hint">This is not a commitment — it helps us match you to the right entry point.</p>
+        <div class="choice-grid">
+          <button class="choice-btn" onclick="selectChoice(this,'a6')">Under &#8358;150,000</button>
+          <button class="choice-btn" onclick="selectChoice(this,'a6')">&#8358;150,000 – &#8358;500,000</button>
+          <button class="choice-btn" onclick="selectChoice(this,'a6')">&#8358;500,000 – &#8358;1,500,000</button>
+          <button class="choice-btn" onclick="selectChoice(this,'a6')">Above &#8358;1,500,000</button>
+        </div>
+        <input type="hidden" id="a6" />
+        <p class="field-error" id="e6">Please select an option.</p>
+        <div class="nav-row">
+          <button class="btn-back" onclick="prevStep(6)">&larr; Back</button>
+          <button class="btn-next" onclick="nextStep(6)">Continue &rarr;</button>
+        </div>
+      </div>
+
+      <!-- Q7 — CONTACT DETAILS -->
+      <div class="q-block" id="q7">
+        <p class="q-counter">Final Step — 7 of 7</p>
+        <h2 class="q-title">Where should we reach you?</h2>
+        <p class="q-hint">If you are selected, we will contact you within 48 hours. All details are kept strictly private.</p>
+
+        <div class="mini-field">
+          <label class="mini-label" for="a7-name">Full Name</label>
+          <input class="elos-input" type="text" id="a7-name" placeholder="Your full name" autocomplete="name" />
+          <p class="field-error" id="e7-name">Please enter your full name.</p>
+        </div>
+
+        <div class="mini-field">
+          <label class="mini-label" for="a7-wa">WhatsApp Number</label>
+          <input class="elos-input" type="tel" id="a7-wa" placeholder="+234 800 000 0000" autocomplete="tel" />
+          <p class="field-error" id="e7-wa">Please enter your WhatsApp number.</p>
+        </div>
+
+        <div class="mini-field">
+          <label class="mini-label" for="a7-email">Email Address</label>
+          <input class="elos-input" type="email" id="a7-email" placeholder="your@email.com" autocomplete="email" />
+          <p class="field-error" id="e7-email">Please enter a valid email address.</p>
+        </div>
+
+        <p class="privacy-note">
+          <span>&#128274;</span> Your information is private and will never be shared. You will only be contacted by the ELOS team.
+        </p>
+
+        <div class="nav-row">
+          <button class="btn-back" onclick="prevStep(7)">&larr; Back</button>
+          <button class="btn-next" onclick="submitForm()">Submit Application</button>
+        </div>
+      </div>
+
+    </div><!-- /form-card -->
+
+    <!-- SUBMITTED STATE -->
+    <div class="submitted-wrap" id="submitted">
+      <div class="check-ring">&#10003;</div>
+      <h2 class="submitted-title">Application received.</h2>
+      <p class="submitted-body">
+        We review every application personally. If you are a fit for this cohort,
+        you will hear from us within 48 hours via WhatsApp or email.
+        Slots are closing fast.
+      </p>
+      <hr style="max-width:300px; margin: 0 auto 1.5rem; border-color: var(--border);" />
+      <p style="font-size:0.75rem; color:var(--text-muted);">Emotional Leverage Operating System™ — Private Beta</p>
+    </div>
+
+  </div><!-- /container -->
+
+  <!-- FOOTER -->
+  <div class="page-footer">
+    <div class="container d-flex justify-content-between flex-wrap gap-2">
+      <span>Emotional Leverage Operating System™</span>
+      <span>Private &amp; Confidential</span>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    let current = 1;
+    const total = 7;
+
+    function updateProgress(step) {
+      for (let i = 1; i <= total; i++) {
+        const dot = document.getElementById('sd' + i);
+        if (i < step) {
+          dot.className = 'step-dot done';
+          dot.textContent = '✓';
+        } else if (i === step) {
+          dot.className = 'step-dot active';
+          dot.textContent = i;
+        } else {
+          dot.className = 'step-dot';
+          dot.textContent = i;
+        }
+        if (i < total) {
+          const line = document.getElementById('sl' + i);
+          line.className = i < step ? 'step-line done' : 'step-line';
+        }
+      }
+    }
+
+    function getValue(step) {
+      return document.getElementById('a' + step).value.trim();
+    }
+
+    function nextStep(step) {
+      if (step < 7) {
+        if (!getValue(step)) {
+          document.getElementById('e' + step).style.display = 'block';
+          return;
+        }
+        document.getElementById('e' + step).style.display = 'none';
+      }
+      document.getElementById('q' + step).classList.remove('active');
+      current = step + 1;
+      document.getElementById('q' + current).classList.add('active');
+      updateProgress(current);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function prevStep(step) {
+      document.getElementById('q' + step).classList.remove('active');
+      current = step - 1;
+      document.getElementById('q' + current).classList.add('active');
+      updateProgress(current);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function selectChoice(btn, fieldId) {
+      const grid = btn.closest('.choice-grid');
+      grid.querySelectorAll('.choice-btn').forEach(b => b.classList.remove('selected'));
+      btn.classList.add('selected');
+      document.getElementById(fieldId).value = btn.textContent.trim();
+    }
+
+    function validateEmail(email) {
+      return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    }
+
+    function submitForm() {
+      const name  = document.getElementById('a7-name').value.trim();
+      const wa    = document.getElementById('a7-wa').value.trim();
+      const email = document.getElementById('a7-email').value.trim();
+      let valid = true;
+
+      if (!name) {
+        document.getElementById('e7-name').style.display = 'block';
+        valid = false;
+      } else {
+        document.getElementById('e7-name').style.display = 'none';
+      }
+
+      if (!wa) {
+        document.getElementById('e7-wa').style.display = 'block';
+        valid = false;
+      } else {
+        document.getElementById('e7-wa').style.display = 'none';
+      }
+
+      if (!email || !validateEmail(email)) {
+        document.getElementById('e7-email').style.display = 'block';
+        valid = false;
+      } else {
+        document.getElementById('e7-email').style.display = 'none';
+      }
+
+      if (!valid) return;
+
+      document.getElementById('form-card').style.display = 'none';
+      document.getElementById('progress-section').style.display = 'none';
+      document.getElementById('submitted').classList.add('active');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter' && e.target.tagName === 'INPUT' && current < 7) {
+        e.preventDefault();
+        nextStep(current);
+      }
+    });
+  </script>
+</body>
+</html>
