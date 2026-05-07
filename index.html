@@ -664,39 +664,57 @@
     }
 
     function submitForm() {
-      const name  = document.getElementById('a7-name').value.trim();
-      const wa    = document.getElementById('a7-wa').value.trim();
-      const email = document.getElementById('a7-email').value.trim();
-      let valid = true;
+  const name  = document.getElementById('a7-name').value.trim();
+  const wa    = document.getElementById('a7-wa').value.trim();
+  const email = document.getElementById('a7-email').value.trim();
+  let valid = true;
 
-      if (!name) {
-        document.getElementById('e7-name').style.display = 'block';
-        valid = false;
-      } else {
-        document.getElementById('e7-name').style.display = 'none';
+  if (!name) {
+    document.getElementById('e7-name').style.display = 'block';
+    valid = false;
+  } else {
+    document.getElementById('e7-name').style.display = 'none';
+  }
+
+  if (!wa) {
+    document.getElementById('e7-wa').style.display = 'block';
+    valid = false;
+  } else {
+    document.getElementById('e7-wa').style.display = 'none';
+  }
+
+  if (!email || !validateEmail(email)) {
+    document.getElementById('e7-email').style.display = 'block';
+    valid = false;
+  } else {
+    document.getElementById('e7-email').style.display = 'none';
+  }
+
+  if (!valid) return;
+
+  const data = {
+    role:       document.getElementById('a1').value,
+    regret:     document.getElementById('a2').value,
+    cost:       document.getElementById('a3').value,
+    coaching:   document.getElementById('a4').value,
+    change:     document.getElementById('a5').value,
+    investment: document.getElementById('a6').value,
+    name:       name,
+    whatsapp:   wa,
+    email:      email
+  };
+
+  fetch('https://formspree.io/f/xdablnoj', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(data)
+  });
+
+  document.getElementById('form-card').style.display = 'none';
+  document.getElementById('progress-section').style.display = 'none';
+  document.getElementById('submitted').classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
       }
-
-      if (!wa) {
-        document.getElementById('e7-wa').style.display = 'block';
-        valid = false;
-      } else {
-        document.getElementById('e7-wa').style.display = 'none';
-      }
-
-      if (!email || !validateEmail(email)) {
-        document.getElementById('e7-email').style.display = 'block';
-        valid = false;
-      } else {
-        document.getElementById('e7-email').style.display = 'none';
-      }
-
-      if (!valid) return;
-
-      document.getElementById('form-card').style.display = 'none';
-      document.getElementById('progress-section').style.display = 'none';
-      document.getElementById('submitted').classList.add('active');
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
 
     document.addEventListener('keydown', function(e) {
       if (e.key === 'Enter' && e.target.tagName === 'INPUT' && current < 7) {
